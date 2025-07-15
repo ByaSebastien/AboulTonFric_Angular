@@ -1,7 +1,9 @@
 @for (link of links; track link.title) {
-  @if (link.url) {
-    <a [routerLink]="link.url">{{link.title}}</a>
-  } @else {
-    <button (click)="link.action">{{link.title}}</button>
+  @if (!link.isHidden) {
+    @if (link.url) {
+      <a [routerLink]="link.url">{{ link.title }}</a>
+    } @else {
+      <button (click)="link.action!()">{{ link.title }}</button>
+    }
   }
 }

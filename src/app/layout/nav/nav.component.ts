@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, effect, inject, signal, Signal} from '@angular/core';
 import {LinkModel} from '../../shared/models/link.model';
 import {RouterLink} from '@angular/router';
+import {AuthService} from '../../features/auth/services/auth.service';
+import {UserTokenDtoModel} from '../../features/auth/models/user-token-dto.model';
 
 @Component({
   selector: 'app-nav',
@@ -12,13 +14,19 @@ import {RouterLink} from '@angular/router';
 })
 export class NavComponent {
 
+  private readonly _authService: AuthService = inject(AuthService);
+
   links!: LinkModel[];
 
   constructor() {
-    this.links = [
-      {title: 'Register', url: '/register'},
-      {title: 'Lien 2'},
-      {title: 'Lien 3'},
-    ]
+
+    effect(() => {
+      this.links = [
+        {title: 'Register', url: '/register', isHidden: !!this._authService.currentUser()},
+        {title: 'Login', url: '/login', isHidden: !!this._authService.currentUser()},
+        {title: 'Lien 3'},
+        {title: 'Logout', action: () => this._authService.logout(), isHidden: !this._authService.currentUser()},
+      ];
+    });
   }
 }

@@ -1,4 +1,4 @@
-export interface UserRoleEnum {
-  ADMIN: "ADMIN",
-  USER: "USER",
+export enum UserRoleEnum {
+  ADMIN= "ADMIN",
+  USER= "USER",
 }
